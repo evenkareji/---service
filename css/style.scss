@@ -1,5 +1,6 @@
 @use 'mixin' as *;
-
+$cWhite: white;
+$cBlack: black;
 $cMain: #ed6103;
 $cBase: #e8e8e8;
 @mixin mq-pc() {
@@ -19,6 +20,10 @@ $cBase: #e8e8e8;
   margin-left: auto;
   margin-right: auto;
 }
+
+h1 {
+  color: #e8e8e8;
+}
 html {
   font-size: (14/16) * 100%;
   @include mq-pc() {
@@ -28,6 +33,11 @@ html {
 body {
   font-family: 'Noto Serif JP', sans-serif;
   margin: 0;
+}
+a {
+  text-decoration: none;
+  list-style: none;
+  color: $cWhite;
 }
 li {
   list-style: none;
@@ -49,40 +59,98 @@ p {
 }
 
 .header {
-  &__hero {
-    background: url('../images/react-next.png');
-    background-size: cover;
+  position: relative;
+  & .detail__visual {
+    width: 100% !important;
+  }
+  &__img {
+    width: 100%;
     height: clamp(400px, 50vw, 600px);
+    object-fit: cover;
+  }
+  &__title {
+    position: absolute;
+    top: 50%; /*親要素を起点に上から50%*/
+    left: 50%; /*親要素を起点に左から50%*/
+    transform: translateY(-50%) translateX(-50%); /*要素の大きさの半分ずつを戻す*/
+    color: #ed6103;
+    font-size: rem(26);
+    @include mq-pc() {
+      width: 70%;
+      text-align: right;
+      font-size: rem(42);
+    }
   }
 }
 
 // BLOCK
+
+#container {
+  text-align: left;
+}
+
+.btn {
+  background-color: $cMain;
+  color: $cWhite;
+  border: 1px solid $cMain;
+  padding: 10px 40px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &.slide-bg {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 130%;
+      height: 100%;
+      background-color: $cBlack;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-111%) skewX(-40deg);
+      transition: transform 0.3s;
+      z-index: -1;
+    }
+
+    &:hover {
+      color: $cMain;
+
+      &::before {
+        transform: translateX(-12%) skewX(-40deg);
+      }
+    }
+  }
+}
+
 .detail {
   // position: relative;
   padding: 80px 0px 100px;
 
-  &__img {
-    transform: translateX(-100%);
-  }
-  &__visual:hover {
-    img {
-      @include animation(
-        $name: kf-img-slide,
-        $duration: 1.6s,
-        $timing-function: ease-in-out
-      );
-    }
-  }
   &__visual {
     position: relative;
-
     overflow: hidden;
-    &:hover {
+    & .detail__img {
+      opacity: 0;
+    }
+    &.visual-show {
       &::after {
         transition: transform 0.3s;
+        opacity: 1;
         transform: none;
         @include animation(
           $name: kf-cover-slide,
+          $duration: 1.6s,
+          $timing-function: ease-in-out
+        );
+      }
+      img {
+        @include animation(
+          $name: kf-img-show,
           $duration: 1.6s,
           $timing-function: ease-in-out
         );
@@ -96,13 +164,12 @@ p {
       left: 0;
       right: 0;
       bottom: 0;
-      transform: translateX(-100%);
       background-color: $cMain;
+      opacity: 0;
     }
     object-fit: cover;
     width: 100%;
     height: auto;
-
     @include mq-pc() {
       width: 50%;
     }
@@ -113,7 +180,9 @@ p {
     align-items: center;
   }
   &__article {
-    width: 30%;
+    @include mq-pc() {
+      width: 30%;
+    }
     overflow-wrap: break-word;
   }
   &__title {
@@ -129,21 +198,36 @@ p {
 
 @keyframes kf-cover-slide {
   0% {
-    transform: translateX(-100%);
+    transform-origin: left;
+    transform: scaleX(0);
   }
   50% {
-    transform: translateX(0%);
+    transform-origin: left;
+    transform: scaleX(1);
+  }
+  50.1% {
+    transform-origin: right;
+    transform: scaleX(1);
   }
   100% {
-    transform: translateX(100%);
+    transform-origin: right;
+    transform: scaleX(0);
   }
 }
-@keyframes kf-img-slide {
+
+@keyframes kf-img-show {
   0% {
-    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  50.1% {
+    opacity: 1;
+    transform: scale(1.5);
   }
   100% {
-    transform: translateX(0%);
+    opacity: 1;
   }
 }
 
@@ -160,3 +244,245 @@ p {
     justify-content: space-around;
   }
 }
+.animate-title {
+  &.inview {
+    opacity: 1;
+
+    & .char {
+      display: inline-block;
+    }
+  }
+
+  & .char {
+    opacity: 0;
+  }
+}
+
+.animate-title.inview .char {
+  @include animation(
+    $name: kf-animate-chars,
+    $duration: 1s,
+    $timing-function: cubic-bezier(0.39, 1.57, 0.58, 1),
+    $fill-mode: both
+  );
+
+  @for $i from 1 through 30 {
+    &:nth-child(#{$i}) {
+      animation-delay: $i * 0.04s;
+    }
+  }
+}
+
+@keyframes kf-animate-chars {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+// modifier
+
+li {
+  list-style: none;
+  text-decoration: none;
+}
+.index a {
+  display: block;
+  width: 12px;
+  height: 12px;
+  margin: 24px 0;
+  background-color: #d4c4ef;
+  border-radius: 50%;
+
+  transition: transform 0.2s;
+}
+
+.index a.active {
+  background-color: $cMain;
+  transform: scale(1.8);
+}
+
+.slide {
+  position: relative;
+  background: #e8e8e8;
+}
+.slide-inner {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  perspective: 600px;
+  transform-style: preserve-3d;
+  perspective-origin: center center;
+  overflow: hidden;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+
+  /* 高さも必須らしい */
+  height: 100vh;
+  /* border: 10px solid #000; */
+}
+.slide-content {
+  box-shadow: 4px 25px 34px -6px rgba(50, 37, 46, 0.6);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-width: 100%;
+  height: 100%;
+  /* height: 100vh; */
+}
+.slide-content img {
+  /* max-width: 100%; */
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  /* height: 100vh; */
+}
+.slide-content {
+  // transition: transform 2s;
+}
+img.above {
+  @include animation(
+    $name: ky-card-remove,
+    $duration: 1s,
+    $timing-function: cubic-bezier(0.39, 1.57, 0.58, 1)
+  );
+}
+img.fit {
+  @include animation(
+    $name: ky-card-add,
+    $duration: 0s,
+    $timing-function: cubic-bezier(0.39, 1.57, 0.58, 1)
+  );
+}
+
+@keyframes ky-card-remove {
+  0% {
+    transform: translateZ(0px);
+  }
+  50% {
+    transform: translateZ(-500px);
+  }
+
+  100% {
+    transform: translateZ(0px);
+  }
+}
+// intersection
+@keyframes ky-card-add {
+  0% {
+    transform: translateZ(0px);
+  }
+  50% {
+    transform: translateZ(-500px);
+  }
+  100% {
+    transform: translateZ(0px);
+  }
+}
+aside {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+.slider {
+  position: relative;
+  z-index: 1;
+
+  & .main {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    &__title {
+      color: $cMain;
+      font-size: rem(32);
+      margin-bottom: (16/32) + em;
+      @include mq-pc() {
+        font-size: rem(46);
+        margin-bottom: (20/32) + em;
+      }
+    }
+    &__text {
+      font-size: rem(14);
+      color: $cWhite;
+      text-align: right;
+      @include mq-pc() {
+        font-size: rem(14);
+      }
+    }
+  }
+  & .sub {
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    transform: translateX(-50%);
+    &__title {
+      color: $cMain;
+      font-size: rem(32);
+      margin-bottom: (16/32) + em;
+      @include mq-pc() {
+        font-size: rem(46);
+        margin-bottom: (20/32) + em;
+      }
+    }
+    &__text {
+      font-size: rem(14);
+      color: $cWhite;
+      text-align: left;
+      @include mq-pc() {
+        font-size: rem(14);
+      }
+    }
+    &__text:nth-child(3) {
+      margin-bottom: (50/14) + em;
+    }
+  }
+}
+
+// &__visual {
+//   position: relative;
+//   overflow: hidden;
+//   & .detail__img {
+//     opacity: 0;
+//   }
+//   &.visual-show {
+//     &::after {
+//       transition: transform 0.3s;
+//       opacity: 1;
+//       transform: none;
+//       @include animation(
+//         $name: kf-cover-slide,
+//         $duration: 1.6s,
+//         $timing-function: ease-in-out
+//       );
+//     }
+//     img {
+//       @include animation(
+//         $name: kf-img-show,
+//         $duration: 1.6s,
+//         $timing-function: ease-in-out
+//       );
+//     }
+//   }
+
+//   &::after {
+//     position: absolute;
+//     content: '';
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     background-color: $cMain;
+//     opacity: 0;
+//   }
+//   object-fit: cover;
+//   width: 100%;
+//   height: auto;
+// }
