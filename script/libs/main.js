@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
       el.classList.add('visual-show');
     }
   };
-  const so = new ScrollObserver('.detail__visual', cb);
-  // const so = new ScrollObserver('.visual', cb);
+  // const so = new ScrollObserver('.detail__visual', cb);
+  const so = new ScrollObserver('.visual', cb);
 
   const els = document.querySelectorAll('.animate-title');
   const cbText = function (entries, observer) {

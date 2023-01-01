@@ -60,7 +60,7 @@ p {
 
 .header {
   position: relative;
-  & .detail__visual {
+  & .detail__width {
     width: 100% !important;
   }
   &__img {
@@ -131,50 +131,6 @@ p {
   // position: relative;
   padding: 80px 0px 100px;
 
-  &__visual {
-    position: relative;
-    overflow: hidden;
-    & .detail__img {
-      opacity: 0;
-    }
-    &.visual-show {
-      &::after {
-        transition: transform 0.3s;
-        opacity: 1;
-        transform: none;
-        @include animation(
-          $name: kf-cover-slide,
-          $duration: 1.6s,
-          $timing-function: ease-in-out
-        );
-      }
-      img {
-        @include animation(
-          $name: kf-img-show,
-          $duration: 1.6s,
-          $timing-function: ease-in-out
-        );
-      }
-    }
-
-    &::after {
-      position: absolute;
-      content: '';
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: $cMain;
-      opacity: 0;
-    }
-    object-fit: cover;
-    width: 100%;
-    height: auto;
-    @include mq-pc() {
-      width: 50%;
-    }
-  }
-
   &__inner {
     @include inner();
     align-items: center;
@@ -214,7 +170,22 @@ p {
     transform: scaleX(0);
   }
 }
+@keyframes ky-text-anime {
+  0% {
+    // transform: translateY(-140px);
+    color: rgba(255, 165, 0, 1);
+    // color: black;
+    transform: translateY(-100%);
+  }
+  80% {
+    color: black;
+  }
 
+  100% {
+    transform: translateY(0%);
+    color: rgba(255, 165, 0, 1);
+  }
+}
 @keyframes kf-img-show {
   0% {
     opacity: 0;
@@ -446,43 +417,57 @@ aside {
   }
 }
 
-// &__visual {
-//   position: relative;
-//   overflow: hidden;
-//   & .detail__img {
-//     opacity: 0;
-//   }
-//   &.visual-show {
-//     &::after {
-//       transition: transform 0.3s;
-//       opacity: 1;
-//       transform: none;
-//       @include animation(
-//         $name: kf-cover-slide,
-//         $duration: 1.6s,
-//         $timing-function: ease-in-out
-//       );
-//     }
-//     img {
-//       @include animation(
-//         $name: kf-img-show,
-//         $duration: 1.6s,
-//         $timing-function: ease-in-out
-//       );
-//     }
-//   }
+.visual {
+  position: relative;
+  overflow: hidden;
+  & .visual__img {
+    opacity: 0;
+  }
 
-//   &::after {
-//     position: absolute;
-//     content: '';
-//     top: 0;
-//     left: 0;
-//     right: 0;
-//     bottom: 0;
-//     background-color: $cMain;
-//     opacity: 0;
-//   }
-//   object-fit: cover;
-//   width: 100%;
-//   height: auto;
-// }
+  &.visual-show {
+    &::after {
+      transition: transform 0.3s;
+      opacity: 1;
+      transform: none;
+      @include animation(
+        $name: kf-cover-slide,
+        $duration: 1.6s,
+        $timing-function: ease-in-out
+      );
+    }
+  }
+  &.visual-show {
+    .visual__img {
+      @include animation(
+        $name: kf-img-show,
+        $duration: 1.6s,
+        $timing-function: ease-in-out
+      );
+    }
+  }
+
+  // .visual-show {
+  // }
+
+  &::after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $cMain;
+    opacity: 0;
+  }
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  @include mq-pc() {
+    width: 50%;
+  }
+  &.header__hero {
+    @include mq-pc() {
+      width: 100%;
+    }
+  }
+}

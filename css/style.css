@@ -49,7 +49,7 @@ p {
 .header {
   position: relative;
 }
-.header .detail__visual {
+.header .detail__width {
   width: 100% !important;
 }
 .header__img {
@@ -115,67 +115,6 @@ p {
 .detail {
   padding: 80px 0px 100px;
 }
-.detail__visual {
-  position: relative;
-  overflow: hidden;
-  -o-object-fit: cover;
-     object-fit: cover;
-  width: 100%;
-  height: auto;
-}
-.detail__visual .detail__img {
-  opacity: 0;
-}
-.detail__visual.visual-show::after {
-  transition: transform 0.3s;
-  opacity: 1;
-  transform: none;
-  -webkit-animation-name: kf-cover-slide;
-          animation-name: kf-cover-slide;
-  -webkit-animation-duration: 1.6s;
-          animation-duration: 1.6s;
-  -webkit-animation-timing-function: ease-in-out;
-          animation-timing-function: ease-in-out;
-  -webkit-animation-delay: 0s;
-          animation-delay: 0s;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1;
-  -webkit-animation-direction: normal;
-          animation-direction: normal;
-  -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
-}
-.detail__visual.visual-show img {
-  -webkit-animation-name: kf-img-show;
-          animation-name: kf-img-show;
-  -webkit-animation-duration: 1.6s;
-          animation-duration: 1.6s;
-  -webkit-animation-timing-function: ease-in-out;
-          animation-timing-function: ease-in-out;
-  -webkit-animation-delay: 0s;
-          animation-delay: 0s;
-  -webkit-animation-iteration-count: 1;
-          animation-iteration-count: 1;
-  -webkit-animation-direction: normal;
-          animation-direction: normal;
-  -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
-}
-.detail__visual::after {
-  position: absolute;
-  content: "";
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ed6103;
-  opacity: 0;
-}
-@media (min-width: 800px) {
-  .detail__visual {
-    width: 50%;
-  }
-}
 .detail__inner {
   width: 86%;
   margin-left: auto;
@@ -237,6 +176,32 @@ p {
   100% {
     transform-origin: right;
     transform: scaleX(0);
+  }
+}
+@-webkit-keyframes ky-text-anime {
+  0% {
+    color: rgb(255, 165, 0);
+    transform: translateY(-100%);
+  }
+  80% {
+    color: black;
+  }
+  100% {
+    transform: translateY(0%);
+    color: rgb(255, 165, 0);
+  }
+}
+@keyframes ky-text-anime {
+  0% {
+    color: rgb(255, 165, 0);
+    transform: translateY(-100%);
+  }
+  80% {
+    color: black;
+  }
+  100% {
+    transform: translateY(0%);
+    color: rgb(255, 165, 0);
   }
 }
 @-webkit-keyframes kf-img-show {
@@ -484,7 +449,8 @@ li {
   perspective-origin: center center;
   overflow: hidden;
   overflow-y: auto;
-  scroll-snap-type: y mandatory;
+  -ms-scroll-snap-type: y mandatory;
+      scroll-snap-type: y mandatory;
   /* 高さも必須らしい */
   height: 100vh;
   /* border: 10px solid #000; */
@@ -655,4 +621,70 @@ aside {
 .slider .sub__text:nth-child(3) {
   margin-bottom: 3.5714285714em;
 }
-/*# sourceMappingURL=style.css.map */
+
+.visual {
+  position: relative;
+  overflow: hidden;
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+  height: auto;
+}
+.visual .visual__img {
+  opacity: 0;
+}
+.visual.visual-show::after {
+  transition: transform 0.3s;
+  opacity: 1;
+  transform: none;
+  -webkit-animation-name: kf-cover-slide;
+          animation-name: kf-cover-slide;
+  -webkit-animation-duration: 1.6s;
+          animation-duration: 1.6s;
+  -webkit-animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
+  -webkit-animation-delay: 0s;
+          animation-delay: 0s;
+  -webkit-animation-iteration-count: 1;
+          animation-iteration-count: 1;
+  -webkit-animation-direction: normal;
+          animation-direction: normal;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+.visual.visual-show .visual__img {
+  -webkit-animation-name: kf-img-show;
+          animation-name: kf-img-show;
+  -webkit-animation-duration: 1.6s;
+          animation-duration: 1.6s;
+  -webkit-animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
+  -webkit-animation-delay: 0s;
+          animation-delay: 0s;
+  -webkit-animation-iteration-count: 1;
+          animation-iteration-count: 1;
+  -webkit-animation-direction: normal;
+          animation-direction: normal;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+.visual::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ed6103;
+  opacity: 0;
+}
+@media (min-width: 800px) {
+  .visual {
+    width: 50%;
+  }
+}
+@media (min-width: 800px) {
+  .visual.header__hero {
+    width: 100%;
+  }
+}/*# sourceMappingURL=style.css.map */
